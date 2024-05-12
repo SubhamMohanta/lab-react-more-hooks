@@ -1,7 +1,19 @@
-import React, { useReducer } from 'react'
-import ToDoItem from './ToDoItem'
-const todoReducer = (state, action) => {
-    if (action.type == "ADD_ITEM"){
+import React, { useReducer, useRef } from 'react'
+import ToDoItem from './ToDoItem';
+// import './App.css'
+import '../index.css'
+
+
+const initialState = [
+    {
+        data: "First Item",
+        isHidden: false
+    }
+]
+
+const todoReducer = (state,action)=>{
+    console.log("action: ", action);
+    if(action.type == "ADD_ITEM"){
         return [
             ...state,{
                 data: action.payload,
@@ -9,35 +21,38 @@ const todoReducer = (state, action) => {
             }
         ]
     }
-
-    if (action.type == "CHANGE_ISHIDDEN"){
+    if(action.type=="CHANGE_ISHIDDEN"){
         return state.map((e,i)=>{
-            return i == action.payload ? {...e,isHidden:!e.isHidden} : e
+            return i == action.payload ? {...e, isHidden: !e.isHidden} :e
         })
     }
+
     return state
 }
 
-const initialState = [{data: "Test" ,isHidden: false}]
 
 const ToDoApp = () => {
 
-    const [todo, dispatch] = useReducer(todoReducer, initialState)
+    const [todo , dispatch] = useReducer(todoReducer , initialState)
+    console.log("todo: ", todo);
 
-    return (
-        <>
-        <input type="text" onKeyDown={(e)=>{
-            if(e.key == "Enter"){
-                dispatch({type:'ADD_ITEM', payload:e.target.value})
-                console.log(todo)
+    const input = useRef(null)
+
+return (
+    <div className='todo' >
+        <input ref={input} type="text" onKeyDown={(e)=>{
+            if(e.key=="Enter"){
+                dispatch({type: "ADD_ITEM",payload: e.target.value})
             }
         }}/>
-
-        {todo.map((e, i)=>{
-            return <ToDoItem item = {e} index ={i} dispatch={dispatch}/>
+        {todo.map((e,i)=>{
+            return <ToDoItem item={e} index={i} dispatch={dispatch}/>
         })}
-
-        </>
+        <button onClick={()=>{
+            input.current.focus()
+            // window.scrollTo(top:0,behaviour:)
+        }}>GO BACK TO TOP</button>
+    </div>
     )
 }
 

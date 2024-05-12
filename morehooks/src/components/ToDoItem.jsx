@@ -1,19 +1,21 @@
-import React, { useReducer } from 'react'
-import "../../src/App.css"
+import React from 'react'
+import '../App.css'
 
-const ToDoItem = ({item: {data, isHidden}, index, dispatch}) => {
-    const toggleVisibility = () => {
-        console.log((!isHidden))
-    };
-  return (
-    <div>
-    <h3>{isHidden?"This Content is Hidden":data}</h3>
-    <button onClick={()=>{
-        {dispatch({type:"CHANGE_ISHIDDEN", payload:index})}
-    }}
-        >Toggle</button>
+
+const TodoItem = ({item: {data,isHidden} ,index,dispatch}) => {
+    console.log("isHidden: ", isHidden);
+return (
+    <div className='todoItem' style={{
+        borderRadius:"10px",
+        backgroundColor: "blue",
+        filter: `${isHidden?"blur(2px)":"blur(0px)"}`
+    }}>
+        <h3>{isHidden ? "This Content is Hidden": data}</h3>
+        <button onClick={()=>{
+            dispatch({type: "CHANGE_ISHIDDEN" , payload: index})
+        }}>Toggle</button>
     </div>
-  )
+    )
 }
 
-export default ToDoItem
+export default TodoItem
